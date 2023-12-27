@@ -89,12 +89,12 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 
 <div id="heading">
 <h1>Guitar Tabs App</h1>
-    <div id="categoryButtons">
+<div id="categoryButtons">
         <?php
         // Check if $categories is set before using it in a foreach loop
         if (isset($categories) && is_array($categories)) {
             foreach ($categories as $category) {
-                echo '<button onclick="fetchAndDisplaySongs(\'' . $category['category'] . '\')">' . $category['category'] . '</button>';
+                echo '<button onclick="setCategory(\'' . $category['category'] . '\')">' . $category['category'] . '</button>';
             }
         } else {
             echo '<p>No categories available.</p>';
@@ -120,6 +120,16 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 </div>
 
 <script>
+    // Variable to store the selected category
+    let selectedCategory = '';
+
+    // Function to set the selected category
+    function setCategory(category) {
+        selectedCategory = category;
+        // Fetch and display songs when a category is selected
+        fetchAndDisplaySongs();
+    }
+
     // Function to open the modal
     function openModal(title, artist, image, tabs) {
         const modalTitle = document.getElementById('modalTitle');
@@ -142,55 +152,55 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
         overlay.style.display = 'none';
     }
 
-    // Fetch songs from the API and display them based on the search query
-     // Modified function to fetch and display songs based on category
-     async function fetchAndDisplaySongs(category = '') {
-    const searchInput = document.getElementById('searchInput').value;
-    try {
-        const response = await fetch('/guitarslap/api.php?q=' + encodeURIComponent(searchInput) + '&category=' + encodeURIComponent(category));
+    // Fetch songs from the API and display them based on the search query and category
+    async function fetchAndDisplaySongs() {
+        const searchInput = document.getElementById('searchInput').value;
+        try {
+            // Include the selected category in the API request
+            const response = await fetch(`/guitarslap/api.php?q=${encodeURIComponent(searchInput)}&category=${encodeURIComponent(selectedCategory)}`);
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch songs: ' + response.statusText);
-        }
+            if (!response.ok) {
+                throw new Error('Failed to fetch songs: ' + response.statusText);
+            }
 
-        const songs = await response.json();
+            const songs = await response.json();
 
-        if (Array.isArray(songs)) {
-            const songsDiv = document.getElementById('songs');
-            songsDiv.innerHTML = '';
+            if (Array.isArray(songs)) {
+                const songsDiv = document.getElementById('songs');
+                songsDiv.innerHTML = '';
 
-            songs.forEach(song => {
-                const songDiv = document.createElement('div');
-                songDiv.classList.add('song');
+                songs.forEach(song => {
+                    const songDiv = document.createElement('div');
+                    songDiv.classList.add('song');
 
-                const button = document.createElement('button');
-                button.innerText = 'Show Tabs';
-                button.addEventListener('click', function () {
-                    openModal(song.title, song.artist, song.image_url, song.tabs);
+                    const button = document.createElement('button');
+                    button.innerText = 'Show Tabs';
+                    button.addEventListener('click', function () {
+                        openModal(song.title, song.artist, song.image_url, song.tabs);
+                    });
+
+                    songDiv.innerHTML = `
+                        <h3>${song.title} by ${song.artist}</h3>
+                        <img src="${song.image_url}" alt="Song Image">
+                    `;
+
+                    songDiv.appendChild(button);
+                    songsDiv.appendChild(songDiv);
                 });
+            } else {
+                console.error('Invalid response format:', songs);
+            }
 
-                songDiv.innerHTML = `
-                    <h3>${song.title} by ${song.artist}</h3>
-                    <img src="${song.image_url}" alt="Song Image">
-                `;
-
-                songDiv.appendChild(button);
-                songsDiv.appendChild(songDiv);
-            });
-        } else {
-            console.error('Invalid response format:', songs);
+        } catch (error) {
+            console.error('Error fetching songs:', error.message);
         }
-
-    } catch (error) {
-        console.error('Error fetching songs:', error.message);
     }
-}
 
     // Initial fetch and display
     fetchAndDisplaySongs();
 
     // Hide the overlay when the page loads or refreshes
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         const overlay = document.getElementById('overlay');
         overlay.style.display = 'none';
     });
