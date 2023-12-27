@@ -90,9 +90,10 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 <div id="heading">
 <h1>Guitar Tabs App</h1>
 <div id="categoryButtons">
-        <?php
+<?php
         // Check if $categories is set before using it in a foreach loop
         if (isset($categories) && is_array($categories)) {
+            echo '<button onclick="setCategory(\'\')">All</button>'; // All button
             foreach ($categories as $category) {
                 echo '<button onclick="setCategory(\'' . $category['category'] . '\')">' . $category['category'] . '</button>';
             }
@@ -122,7 +123,6 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 <script>
     // Variable to store the selected category
     let selectedCategory = '';
-
     // Function to set the selected category
     function setCategory(category) {
         selectedCategory = category;
