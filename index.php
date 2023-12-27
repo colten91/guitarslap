@@ -1,3 +1,28 @@
+<?php
+// Assume you have a database connection established
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'guitarslap';
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch unique categories from the database
+$categoriesQuery = "SELECT DISTINCT category FROM songs";
+$categoriesResult = mysqli_query($conn, $categoriesQuery);
+
+if (!$categoriesResult) {
+    die("Error fetching categories: " . mysqli_error($conn));
+}
+
+$categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,12 +71,36 @@
             display: inline-block;
             margin-right: 10px;
         }
+        #heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #categoryButtons {
+            margin-bottom: 10px;
+        }
+
+        #categoryButtons button {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
 
 <div id="heading">
-    <h1>Guitar Tabs App</h1>
+<h1>Guitar Tabs App</h1>
+    <div id="categoryButtons">
+        <?php
+        // Check if $categories is set before using it in a foreach loop
+        if (isset($categories) && is_array($categories)) {
+            foreach ($categories as $category) {
+                echo '<button onclick="fetchAndDisplaySongs(\'' . $category['category'] . '\')">' . $category['category'] . '</button>';
+            }
+        } else {
+            echo '<p>No categories available.</p>';
+        }
+        ?>
+    </div>
     <input type="text" id="searchInput" placeholder="Search for a song" oninput="fetchAndDisplaySongs()" id="searchBar">
     <a href="logout.php">Logout</a>
 </div>
@@ -94,47 +143,48 @@
     }
 
     // Fetch songs from the API and display them based on the search query
-    async function fetchAndDisplaySongs() {
-        const searchInput = document.getElementById('searchInput').value;
-        try {
-            const response = await fetch('/guitarslapinprov/api.php?q=' + encodeURIComponent(searchInput));
+     // Modified function to fetch and display songs based on category
+     async function fetchAndDisplaySongs(category = '') {
+    const searchInput = document.getElementById('searchInput').value;
+    try {
+        const response = await fetch('/guitarslap/api.php?q=' + encodeURIComponent(searchInput) + '&category=' + encodeURIComponent(category));
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch songs: ' + response.statusText);
-            }
-
-            const songs = await response.json();
-
-            if (Array.isArray(songs)) {
-                const songsDiv = document.getElementById('songs');
-                songsDiv.innerHTML = '';
-
-                songs.forEach(song => {
-                    const songDiv = document.createElement('div');
-                    songDiv.classList.add('song');
-
-                    const button = document.createElement('button');
-                    button.innerText = 'Show Tabs';
-                    button.addEventListener('click', function() {
-                        openModal(song.title, song.artist, song.image_url, song.tabs);
-                    });
-
-                    songDiv.innerHTML = `
-                        <h3>${song.title} by ${song.artist}</h3>
-                        <img src="${song.image_url}" alt="Song Image">
-                    `;
-
-                    songDiv.appendChild(button);
-                    songsDiv.appendChild(songDiv);
-                });
-            } else {
-                console.error('Invalid response format:', songs);
-            }
-
-        } catch (error) {
-            console.error('Error fetching songs:', error.message);
+        if (!response.ok) {
+            throw new Error('Failed to fetch songs: ' + response.statusText);
         }
+
+        const songs = await response.json();
+
+        if (Array.isArray(songs)) {
+            const songsDiv = document.getElementById('songs');
+            songsDiv.innerHTML = '';
+
+            songs.forEach(song => {
+                const songDiv = document.createElement('div');
+                songDiv.classList.add('song');
+
+                const button = document.createElement('button');
+                button.innerText = 'Show Tabs';
+                button.addEventListener('click', function () {
+                    openModal(song.title, song.artist, song.image_url, song.tabs);
+                });
+
+                songDiv.innerHTML = `
+                    <h3>${song.title} by ${song.artist}</h3>
+                    <img src="${song.image_url}" alt="Song Image">
+                `;
+
+                songDiv.appendChild(button);
+                songsDiv.appendChild(songDiv);
+            });
+        } else {
+            console.error('Invalid response format:', songs);
+        }
+
+    } catch (error) {
+        console.error('Error fetching songs:', error.message);
     }
+}
 
     // Initial fetch and display
     fetchAndDisplaySongs();
