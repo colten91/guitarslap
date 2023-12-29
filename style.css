@@ -4,7 +4,104 @@ body {
     padding: 0;
     background-color: #ffffff;
 }
+.logotitle { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10rem;
+    margin-top: -3rem;
+}
+.maintitle {
+    font-size: 3vw;
+    color: #fff;
+    text-align: center;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  #heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
+  
+  @-webkit-keyframes glow {
+    from {
+      text-shadow: 0 0 5px #fff, 0 0 15px #fff, 0 0 25px #71deff, 0 0 35px #71deff, 0 0 50px #71deff, 0 0 20px #71deff, 0 0 30px #71deff;
+    }
+    
+    to {
+      text-shadow: 0 0 10px #fff, 0 0 20px #363636, 0 0 35px #363636, 0 0 45px #363636, 0 0 60px #363636, 0 0 20px #363636, 0 0 40px #363636;
+    }
+}
+input{
+    
+    box-shadow: inset #abacaf 0 0 0 2px;
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    appearance: none;
+    width: 100%;
+    position: relative;
+    border-radius: 3px;
+    padding: 9px 12px;
+    line-height: 1.4;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: 400;
+    height: 40px;
+    transition: all .2s ease;
+}
+    input:hover{
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 2px;
+    }
+    input:focus{
+        background: #fff;
+        outline: 0;
+        box-shadow: 0 0 0 0 #fff inset, #1de9b6 0 0 0 3px;
+    }
+
+
+button{
+    
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 12px 24px;
+    border: 0;
+    color: #3a4149;
+    background: #e7ebee;
+    line-height: 1.15;
+    font-size: 16px;
+}
+    button:hover {
+        transition: all .1s ease;
+        box-shadow: 0 0 0 0 #fff, 0 0 0 3px #1de9b6;
+    }
+
+
+.logo{
+    height: auto;
+    width: 12vw;
+}
+.logout{
+    margin-left: 0;
+    display: flex;
+    width: 90px;
+    background-color: black;
+    height: 30px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    transition: 0.5s;
+}
+.logout:hover{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    background-color: red;
+
+}
 h1 {
     text-align: center;
     color: #333;
@@ -54,6 +151,12 @@ pre {
 
 /* Media query for screens less than 450px */
 @media (max-width: 450px) {
+    .maintitle {
+        font-size: 7vw;
+        color: #fff;
+        text-align: center;
+        animation: glow 2s ease-in-out infinite alternate;
+      }
     #songs {
         padding: 10px;
     }

@@ -62,18 +62,10 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
         }
 
         /* Additional styles for the heading section */
-        #heading {
-            text-align: center;
-            margin-bottom: 20px;
-        }
 
         #searchBar {
             display: inline-block;
             margin-right: 10px;
-        }
-        #heading {
-            text-align: center;
-            margin-bottom: 20px;
         }
 
         #categoryButtons {
@@ -84,11 +76,17 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
             margin-right: 10px;
         }
     </style>
+
 </head>
 <body>
 
 <div id="heading">
-<h1>Guitar Tabs App</h1>
+<a href="logout.php" class="logout">Logout</a>
+<div class="logotitle">
+            <img src="unnamed.png" class="logo">
+
+            <h1 class="maintitle"> Guitarslap</h1>
+        </div>
 <div id="categoryButtons">
 <?php
         // Check if $categories is set before using it in a foreach loop
@@ -103,7 +101,6 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
         ?>
     </div>
     <input type="text" id="searchInput" placeholder="Search for a song" oninput="fetchAndDisplaySongs()" id="searchBar">
-    <a href="logout.php">Logout</a>
 </div>
 
 <div id="songs"></div>
