@@ -74,7 +74,7 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 
         #categoryButtons button {
             margin-right: 10px;
-        }
+        }https://phind-extension-public-assets.s3.us-east-1.amazonaws.com/terminal.gif
     </style>
 
 </head>
