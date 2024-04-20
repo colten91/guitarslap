@@ -10,7 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         $loginError = 'Please enter both username and password.';
     } else {
         // Connect to the database
-        $conn = new mysqli("fdb34.awardspace.net", "3931222_jhonny", "120704-22486Aa", "3931222_jhonny");
+        //$conn = new mysqli("fdb34.awardspace.net", "3931222_jhonny", "120704-22486Aa", "3931222_jhonny");
+        $conn = new mysqli("localhost", "root", "", "guitarslap");
+
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
