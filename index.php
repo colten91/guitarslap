@@ -177,7 +177,7 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
                     });
 
                     songDiv.innerHTML = `
-                        <h3>${song.title} by ${song.artist}</h3>
+                        <div class="songtitle"><h3>${song.title} by ${song.artist}</h3></div>
                         <img src="${song.image_url}" alt="Song Image">
                     `;
 

@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         $loginError = 'Please enter both username and password.';
     } else {
         // Connect to the database
-        //$conn = new mysqli("fdb34.awardspace.net", "3931222_jhonny", "120704-22486Aa", "3931222_jhonny");
         $conn = new mysqli("localhost", "root", "", "guitarslap");
 
         // Check connection
@@ -53,16 +52,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="login.css">
+    <script>
+        function validateForm() {
+            var username = document.forms["loginForm"]["username"].value;
+            var password = document.forms["loginForm"]["password"].value;
+            var errorMessage = "";
+
+            if (username === "") {
+                errorMessage += "Username is required. ";
+            }
+            if (password === "") {
+                errorMessage += "Password is required. ";
+            }
+
+            if (errorMessage !== "") {
+                alert(errorMessage);
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
 
-<h1>Login</h1>
+<h1>Login into <h1 class="maintitle"> Guitarslap</h1></h1>
 
 <?php if (isset($loginError)) : ?>
     <p style="color: red;"><?php echo $loginError; ?></p>
 <?php endif; ?>
 
-<form method="post" action="">
+<form name="loginForm" method="post" action="" onsubmit="return validateForm();">
     <label for="username">Username:</label>
     <input type="text" name="username">
     <br>
