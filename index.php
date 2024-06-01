@@ -1,5 +1,11 @@
 <?php
-// Assume you have a database connection established
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php'); // Redirect to login page if not logged in
+    exit();
+}
 $servername = 'localhost';
 $username = 'root';
 $password = '';
@@ -82,6 +88,7 @@ $categories = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
 
 <div id="heading">
 <a href="logout.php" class="logout">Logout</a>
+<a href="addsong.php" class="addsong">Add Song</a>
 <div class="logotitle">
             <img src="unnamed.png" class="logo">
 

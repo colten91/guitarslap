@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 header('Location: index.php'); // Redirect to the main page after successful login
                 exit();
             } else {
-                $loginError = 'Invalid username or password';
+                $loginError = 'Invalid username or password.';
             }
         } else {
-            $loginError = 'Invalid username or password';
+            $loginError = 'Invalid username or password.';
         }
 
         $stmt->close();
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 </head>
 <body>
 
-<h1>Login into <h1 class="maintitle"> Guitarslap</h1></h1>
+<h1>Login into <span class="maintitle">Guitarslap</span></h1>
 
 <?php if (isset($loginError)) : ?>
     <p style="color: red;"><?php echo $loginError; ?></p>
@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
 <form name="loginForm" method="post" action="" onsubmit="return validateForm();">
     <label for="username">Username:</label>
-    <input type="text" name="username">
+    <input type="text" name="username" required>
     <br>
     <label for="password">Password:</label>
-    <input type="password" name="password">
+    <input type="password" name="password" required>
     <br>
     <input type="submit" name="login" value="Login">
 </form>
